@@ -1,11 +1,10 @@
 {
   "compilerOptions": {
     "target": "es6",
-    "module": "CommonJS",
+    "module": "nodenext",
+    "moduleResolution": "nodenext",
     "baseUrl": "./src",
-    "paths": {
-      "utils/*": ["./utils/*"]
-    },
+    "paths": {},
     "outDir": "dist",
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
