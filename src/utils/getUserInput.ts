@@ -40,27 +40,59 @@ import chalk from "chalk";
 // };
 
 function getUserInput(): Promise<string> {
-  // readline.emitKeypressEvents(process.stdin);
+  readline.emitKeypressEvents(process.stdin);
   // if (process.stdin.isTTY) process.stdin.setRawMode(true);
 
   const rl = readline.createInterface({
     input: process.stdin,
     output: process.stdout,
-  });
-
-  process.stdin.on("keypress", (str, key) => {
-    console.log({ str, key });
-    if (key.ctrl && key.name === "c") {
-      // do stuff
-    }
+    prompt: "",
   });
 
   return new Promise((resolve, reject) => {
-    rl.on("line", (input) => {
-      console.log({ input });
-      rl.close();
-      resolve(input);
+    const lines: string[] = [];
+
+    rl.on("line", (line) => {
+      console.log({ line });
+      lines.push(line);
     });
+
+    process.stdin.on("keypress", (str, key) => {
+      console.log({ str, key });
+
+      // if (key && key.name === "return") {
+      //   const input = lines.join("\n");
+      //   console.log({ input });
+      //   rl.close();
+      //   resolve(input);
+      // }
+    });
+
+    rl.on("close", () => {
+      const input = lines.join("\n");
+      console.log({ input });
+    });
+
+    // let input = "";
+    // process.stdin.on("keypress", (str, key) => {
+    //   console.log({ str, key });
+    //   if (key && key.name === "backspace") {
+    //     input = input.slice(0, -1);
+    //     readline.clearLine(process.stdout, 0);
+    //     readline.cursorTo(process.stdout, 0);
+    //     process.stdout.write(input);
+    //     return;
+    //   }
+    //   if (key.name === "return") {
+    //     resolve(input);
+    //   }
+    //   if (key.ctrl && key.name === "c") {
+    //     process.exit();
+    //   }
+    //   input += str;
+    //   console.log({ input });
+    //   process.stdout.write(input);
+    // });
   });
 }
 
